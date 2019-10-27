@@ -1,0 +1,19 @@
+{
+    "name": "iammilton82/picspotr-portals",
+    "description": "PicSpotr Portals",
+    "keywords": ["rest", "curl", "http", "https", "client"],
+    "type": "library",
+    "homepage": "https://github.com/iammilton82/picspotr-portals",
+    "license": "MIT",
+    "author": "PicSpotr LLC <help@picspotr.com> (https://www.picspotr.com)",
+    "require": {
+        "mailgun/mailgun-php": "^2.1",
+        "php-http/curl-client": "^1.6",
+        "guzzlehttp/psr7": "^1.5",
+        "mailchimp/mailchimp": "^2.0",
+        "prismic/php-sdk": "^5.0",
+        "contentful/contentful": "^4.1",
+        "mashape/unirest-php": "^3.0",
+        "bdelespierre/underscore": "dev-master"
+    }
+}
