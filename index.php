@@ -25,7 +25,7 @@ $assets = $p->portalAssets($portal);
 	<![endif]-->
 	<meta charset="utf-8">
 	<title>Client Studio</title>
-	<meta name="description" content="The HTML5 Herald">
+	<meta name="description" content="PicSpotr Customer Portals">
 	<meta name="author" content="SitePoint">
 	<link rel="stylesheet" href="https://use.typekit.net/qju2ojt.css">
 	<link rel="stylesheet" type="text/css" media="all" href="<?=APP?>/assets/css/build.css?v=<?=VERSION?>" />
