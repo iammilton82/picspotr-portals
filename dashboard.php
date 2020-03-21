@@ -109,7 +109,7 @@ $u->checkAuth($customer);
 						if($event->startDateTime > time()){
 				?>
 				<div class="item info">
-					<p>You have an upcoming event on your calendar: <strong><?=$event->title?></strong>, <a href="events-details.php?id=<?=$event->id?>">click here for details &rsaquo;</a></p>
+					<p>You have an upcoming event on your calendar: <strong><?=$event->title?></strong>, <a href="events-details.php?eventId=<?=$event->id?>">click here for details &rsaquo;</a></p>
 				</div>
 				<? 		}
 					}
