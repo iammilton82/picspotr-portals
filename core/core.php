@@ -177,6 +177,106 @@ class Portal {
 		return $assets;
 	}
 
+	public function getAnySlotById($id){
+		Unirest\Request::verifyPeer(false);
+	    $url = API."/appointments/getAnySlotById/".$id;
+	    $headers = array(
+	    	"Accept" => "application/json",
+	    	"Content-Type" => "application/json"
+	    );
+
+		$request = Unirest\Request::get($url, $headers);
+
+		if($request->code == 200){
+			$d = json_decode($request->raw_body);
+
+			if($d->status === 1 || $d->status === true){
+				$data = $d->data;
+			} else {
+				$data = false;
+			}
+		} else {
+			$data = false;
+		}
+
+		return $data;
+	}
+
+	public function getSlotById($id){
+		Unirest\Request::verifyPeer(false);
+	    $url = API."/appointments/getSlotById/".$id;
+	    $headers = array(
+	    	"Accept" => "application/json",
+	    	"Content-Type" => "application/json"
+	    );
+
+		$request = Unirest\Request::get($url, $headers);
+
+		if($request->code == 200){
+			$d = json_decode($request->raw_body);
+
+			if($d->status === 1 || $d->status === true){
+				$data = $d->data;
+			} else {
+				$data = false;
+			}
+		} else {
+			$data = false;
+		}
+
+		return $data;
+	}
+
+	public function getAvailableTimeSlots($id){
+		Unirest\Request::verifyPeer(false);
+	    $url = API."/appointments/readByRecurringId/".$id;
+	    $headers = array(
+	    	"Accept" => "application/json",
+	    	"Content-Type" => "application/json"
+	    );
+
+		$request = Unirest\Request::get($url, $headers);
+
+		if($request->code == 200){
+			$d = json_decode($request->raw_body);
+
+			if($d->status === 1 || $d->status === true){
+				$data = $d->data;
+			} else {
+				$data = false;
+			}
+		} else {
+			$data = false;
+		}
+
+		return $data;
+	}
+
+	public function getAvailableAppointments($userId){
+		Unirest\Request::verifyPeer(false);
+	    $url = API."/appointments/read/".$userId;
+	    $headers = array(
+	    	"Accept" => "application/json",
+	    	"Content-Type" => "application/json"
+	    );
+
+		$request = Unirest\Request::get($url, $headers);
+
+		if($request->code == 200){
+			$d = json_decode($request->raw_body);
+
+			if($d->status === 1 || $d->status === true){
+				$data = $d->data;
+			} else {
+				$data = false;
+			}
+		} else {
+			$data = false;
+		}
+
+		return $data;
+	}
+
 	public function getCustomerOverviewByID($customerId){
 		Unirest\Request::verifyPeer(false);
 	    $url = API."/customer/getCustomerOverviewWithId/".$customerId;

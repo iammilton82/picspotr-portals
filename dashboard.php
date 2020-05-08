@@ -18,7 +18,7 @@ $assets = $p->portalAssets($portal);
 $customerName = $p->customerName($customer);
 
 #$core->console($portal);
-$core->console($customer);
+# $core->console($customer);
 
 $u->checkAuth($customer);
 
@@ -35,29 +35,7 @@ $u->checkAuth($customer);
 	<meta name="author" content="SitePoint">
 	<link rel="stylesheet" href="https://use.typekit.net/qju2ojt.css">
 	<link rel="stylesheet" type="text/css" media="all" href="<?=APP?>/assets/css/build.css?v=<?=VERSION?>" />
-	<!-- Begin Inspectlet Asynchronous Code -->
-	<script type="text/javascript">
-	(function() {
-	var insp_ab_loader = true; // set to false to disable A/B optimized loader
-	window.__insp = window.__insp || [];
-	__insp.push(['wid', 1270111355]);
-	var ldinsp = function(){
-	if(typeof window.__inspld != "undefined") return; window.__inspld = 1; var insp = document.createElement('script'); insp.type = 'text/javascript'; insp.async = true; insp.id = "inspsync"; insp.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://cdn.inspectlet.com/inspectlet.js?wid=1270111355&r=' + Math.floor(new Date().getTime()/3600000); var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(insp, x);if(typeof insp_ab_loader != "undefined" && insp_ab_loader){ var adlt = function(){ var e = document.getElementById('insp_abl'); if(e){ e.parentNode.removeChild(e); __insp.push(['ab_timeout']); }}; var adlc = "body{ visibility: hidden !important; }"; var adln = typeof insp_ab_loader_t != "undefined" ? insp_ab_loader_t : 800; insp.onerror = adlt; var abti = setTimeout(adlt, adln); window.__insp_abt = abti; var abl = document.createElement('style'); abl.id = "insp_abl"; abl.type = "text/css"; if(abl.styleSheet) abl.styleSheet.cssText = adlc; else abl.appendChild(document.createTextNode(adlc)); document.head.appendChild(abl); } };
-	setTimeout(ldinsp, 0);
-	})();
-	</script>
-	<!-- End Inspectlet Asynchronous Code -->
-	<!-- Hotjar Tracking Code for www.picspotr.com -->
-		<script>
-		    (function(h,o,t,j,a,r){
-		        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-		        h._hjSettings={hjid:<?=HOTJAR_ID?>,hjsv:<?=HOTJAR_VERSION?>};
-		        a=o.getElementsByTagName('head')[0];
-		        r=o.createElement('script');r.async=1;
-		        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-		        a.appendChild(r);
-		    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-		</script>
+	<? include("include-tracking.php"); ?>
 </head>
 
 <? require("include-header.php") ?>
@@ -69,7 +47,7 @@ $u->checkAuth($customer);
 				<div class="title">Welcome, <?=$customerName?>.</div>
 				<div class="actions">
 					<div class="action-button">
-						<a style="border-color: <?=$assets->primaryColor?>; color: <?=$assets->primaryColor?>;" href="logout.php">Logout</a>
+						<a style="border-color: <?=$assets->primaryColor?>; color: <?=$assets->primaryColor?>;" href="/logout">Logout</a>
 					</div>
 				</div>
 			</header>
@@ -109,7 +87,7 @@ $u->checkAuth($customer);
 						if($event->startDateTime > time()){
 				?>
 				<div class="item info">
-					<p>You have an upcoming event on your calendar: <strong><?=$event->title?></strong>, <a href="events-details.php?eventId=<?=$event->id?>">click here for details &rsaquo;</a></p>
+					<p>You have an upcoming event on your calendar: <strong><?=$event->title?></strong>, <a href="/events-details?eventId=<?=$event->id?>">click here for details &rsaquo;</a></p>
 				</div>
 				<? 		}
 					}
@@ -121,7 +99,7 @@ $u->checkAuth($customer);
 
 				?>
 				<div class="item info">
-					<p>You have a <strong>questionnaire</strong> that has not been completed, <a href="questionnaires.php">click here for details &rsaquo;</a></p>
+					<p>You have a <strong>questionnaire</strong> that has not been completed, <a href="/questionnaires">click here for details &rsaquo;</a></p>
 				</div>
 				<? } ?>
 
@@ -130,45 +108,45 @@ $u->checkAuth($customer);
 				<div class="columns">
 
 
-					<a href="questionnaires.php" class="column thirds card">
+					<a href="/questionnaires" class="column thirds card">
 						<div class="callout"><?=$customer->questionnaires->number?></div>
 						<div class="title">Questionnaire(s)</div>
 						<div class="subtitle">Details about your upcoming shoot</div>
 					</a>
-					<a href="contracts.php" class="column thirds card">
+					<a href="/contracts" class="column thirds card">
 						<div class="callout"><?=$customer->contracts->number?></div>
 						<div class="title">Contracts</div>
 						<div class="subtitle">Contracts, agreements &amp; releases</div>
 					</a>
 
-					<a href="quotes.php" class="column thirds card">
+					<a href="/quotes" class="column thirds card">
 						<div class="callout"><?=$customer->quotes->number?></div>
 						<div class="title">Quotes</div>
 						<div class="subtitle">Your Quotes</div>
 					</a>
 
-					<a href="invoices.php" class="column thirds card">
+					<a href="/invoices" class="column thirds card">
 						<div class="callout"><?=$customer->invoices->number?></div>
 						<div class="title">Invoices</div>
 						<div class="subtitle">Your Billing History</div>
 					</a>
-					<a href="galleries.php" class="column thirds card">
+					<a href="/galleries" class="column thirds card">
 						<div class="callout"><?=$customer->galleries->number?></div>
 						<div class="title">Photo Galleries</div>
 						<div class="subtitle">Your Photos</div>
 					</a>
 
-					<a href="events.php" class="column thirds card">
+					<a href="/events" class="column thirds card">
 						<div class="callout"><?=$customer->events->number?></div>
 						<div class="title">Events</div>
 						<div class="subtitle">Upcoming meetings, shoots &amp; events for you</div>
 					</a>
-					<a href="payments.php" class="column thirds card">
+					<a href="/payments" class="column thirds card">
 						<div class="callout"><?=$customer->payments->number?></div>
 						<div class="title">Payments</div>
 						<div class="subtitle">Your Payment History</div>
 					</a>
-					<a href="documents.php" class="column thirds card">
+					<a href="/documents" class="column thirds card">
 						<div class="callout"><?=$customer->documents !== false && sizeof($customer->documents) > 0 ?  sizeof($customer->documents) : 0?></div>
 						<div class="title">Documents</div>
 						<div class="subtitle">Available documents &amp; uploads</div>
