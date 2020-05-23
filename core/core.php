@@ -4,6 +4,61 @@ use Underscore\Underscore as _;
 
 class Core {
 
+	public function calculateDateDiff($date1, $date2){
+		$time = new stdClass();
+
+		$diff = abs(strtotime($date2) - strtotime($date1));  
+  
+		// To get the year divide the resultant date into 
+		// total seconds in a year (365*60*60*24) 
+		$time->years = floor($diff / (365*60*60*24));  
+		
+		
+		// To get the month, subtract it with years and 
+		// divide the resultant date into 
+		// total seconds in a month (30*60*60*24) 
+		$time->months = floor(($diff - $time->years * 365*60*60*24) 
+									/ (30*60*60*24));  
+		
+		
+		// To get the day, subtract it with years and  
+		// months and divide the resultant date into 
+		// total seconds in a days (60*60*24) 
+		$time->days = floor(($diff - $time->years * 365*60*60*24 -  
+					$time->months*30*60*60*24)/ (60*60*24)); 
+		
+		
+		// To get the hour, subtract it with years,  
+		// months & seconds and divide the resultant 
+		// date into total seconds in a hours (60*60) 
+		$time->hours = floor(($diff - $time->years * 365*60*60*24  
+			- $time->months*30*60*60*24 - $time->days*60*60*24) 
+										/ (60*60));  
+		
+		
+		// To get the minutes, subtract it with years, 
+		// months, seconds and hours and divide the  
+		// resultant date into total seconds i.e. 60 
+		$time->minutes = floor(($diff - $time->years * 365*60*60*24  
+				- $time->months*30*60*60*24 - $time->days*60*60*24  
+								- $time->hours*60*60)/ 60);  
+		
+		
+		// To get the minutes, subtract it with years, 
+		// months, seconds, hours and minutes  
+		$time->seconds = floor(($diff - $time->years * 365*60*60*24  
+				- $time->months*30*60*60*24 - $time->days*60*60*24 
+						- $time->hours*60*60 - $time->minutes*60));  
+
+		$time->totalHours = ($time->days * 24) + $time->hours;
+
+		$time->date1 = $date1;
+		$time->date2 = $date2;
+
+		return $time;
+
+	}
+
 	public function determinePortalURL(){
 		$host = $_SERVER['HTTP_HOST'];
 		$url = explode(".", $host);

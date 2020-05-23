@@ -1,0 +1,22 @@
+{
+  "name": "picspotr-portals",
+  "version": "1.0.0",
+  "description": "PicSpotr Portal Microsite",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://iammilton82@github.com/iammilton82/picspotr-portals.git"
+  },
+  "author": "Milton Jackson (PicSpotr)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iammilton82/picspotr-portals/issues"
+  },
+  "homepage": "https://github.com/iammilton82/picspotr-portals#readme",
+  "dependencies": {
+    "pg-calendar": "^1.4.31"
+  }
+}

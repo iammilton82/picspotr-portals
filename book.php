@@ -18,32 +18,43 @@ if($_COOKIE['user']){
 }
 
 $recurringId = $_GET['id'];
+$today = date('Y-m-d', time());
 
 if($recurringId){
     $appointments = $p->getAvailableTimeSlots($recurringId);
     if($appointments && sizeof($appointments)>0){
         $data = new stdClass();
         $data->info = $appointments[0];
-        $data->dates = _::groupBy($appointments, 'startDate');
-        $data->hasAddress = $p->hasLocationAddress($data->info);
-        $data->portal = $portal;
-        if($data->portal->country !== 'USA'){
-            $data->dateFormat = 'l, d F Y';
-        } else {
-            $data->dateFormat = 'l, F d, Y';
+        $list = array();
+        for($i=0; $i<sizeof($appointments); $i++){
+            $appointment = $appointments[$i];
+            
+            if($appointment->date >= $today){
+                array_push($list, $appointment);
+            }
         }
-        $showAppointments = true;
-        $core->console($data);
+        if(sizeof($list)>0){
+           
+            $data->dates = _::groupBy($list, 'startDate');
+            $data->hasAddress = $p->hasLocationAddress($data->info);
+            $data->portal = $portal;
+            if($data->portal->country !== 'USA'){
+                $data->dateFormat = 'l, d F Y';
+            } else {
+                $data->dateFormat = 'l, F d, Y';
+            }
+
+            $showAppointments = true;
+        } else {
+            $showAppointments = false;
+        }
+
     } else {
         $showAppointments = false;
     }
 } else {
     $showAppointments = false;
 }
-
-
-
-
 
 ?>
 <!doctype html>
@@ -56,9 +67,14 @@ if($recurringId){
 	<title>Book an Appointment</title>
 	<meta name="description" content="The HTML5 Herald">
 	<meta name="author" content="SitePoint">
-	<link rel="stylesheet" href="https://use.typekit.net/qju2ojt.css">
+    <link rel="stylesheet" href="https://use.typekit.net/qju2ojt.css">
+    <link rel="stylesheet" type="text/css" media="all" href="/node_modules/pg-calendar/dist/css/pignose.calendar.min.css" />
 	<link rel="stylesheet" type="text/css" media="all" href="<?=APP?>/assets/css/build.css?v=<?=VERSION?>" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/node_modules/pg-calendar/dist/js/pignose.calendar.full.min.js"></script>
+
 	<? include("include-tracking.php"); ?>
+    
 </head>
 
 <? require("include-header.php") ?>
@@ -123,18 +139,28 @@ if($recurringId){
                                 </div>
                             </div>
                         </div>
-                        <div class="column halfs">
+                        <div id="appointments" class="column halfs">
                             <div class="padded">
                                 <? if(sizeof($data->dates)>0){ ?>
                                 <p>Select an available date and time</p>
                                 
+                                <div class="calendar"></div>
+                                
                                 <? 
                                 foreach($data->dates as $date){
+                                    $show = 'hide';
+                                    if($data->info->isRecurring === 0){
+                                        $show = 'show';
+                                    } else {
+                                        $show = $date[0]->date === date('Y-m-d', time()) ? 'show' : 'hide';
+                                    }
                                 ?>
-                                <div class="row">
+                                <div rel="<?=$date[0]->date?>" class="available-dates row <?=$date[0]->date === date('Y-m-d', time()) ? 'show' : 'hide' ?>">
                                     <h2><?=date($data->dateFormat, strtotime($date[0]->startDate))?></h2>
                                     <ul class="ps-card-layout">
-                                        <? foreach($date as $d){ 
+                                        <? $times = _::indexBy($date, 'startTime');
+                                        foreach($times as $d){
+
                                             if($d->status === 'free'){ ?>
                                         <li>
                                             <div class="padded">
@@ -147,6 +173,14 @@ if($recurringId){
                                 <?
                                 } 
                                 ?>
+
+                                <div id="none-to-book" class="hide">
+                                    <section>
+                                        <div class="none appointments">
+                                            <p>There are no available times that you can book for this date.</p>
+                                        </div>
+                                    </section>
+                                </div>
                                 
                                 <? } ?>
                             </div>
@@ -164,7 +198,7 @@ if($recurringId){
         <div>
             <section>
                 <div class="none appointments">
-                    <p>There are no available times that you can book at this time.</p>
+                    <p>There are no available times that you can book.</p>
                 </div>
             </section>
         </div>
@@ -175,5 +209,40 @@ if($recurringId){
 
     </div>
 </div>
+
+<script type="text/javascript">
+$(function() {
+    $('.calendar').pignoseCalendar({
+        select: function(date, context){
+            if(date[0] !== null){
+                $(".available-dates").removeClass("show").addClass("hide");
+                if(date[0]._i){
+                    var selectedDate = date[0]._i;
+                    var theDateList = $("[rel='"+selectedDate+"']");
+                    if(theDateList.length > 0){
+                        $("#none-to-book").removeClass("show").addClass("hide");
+                        $("[rel='"+selectedDate+"']").removeClass("hide").addClass("show");
+                    } else {
+                        $("#none-to-book").removeClass("hide").addClass("show");
+                    }
+                }
+            }
+            
+        },
+        toggle: false,
+        schedules: [
+            <? foreach($data->dates as $date){ ?>
+            {
+                name: '<?=$date[0]->title?>',
+                date: '<?=$date[0]->date?>'
+            },
+            <? } ?>
+        ],
+        <? if($data->info->isRecurring === 0){ ?>
+        date: moment('<?=$data->info->startDate?>'),    
+        <? } ?>
+    });
+});
+</script>
 
 <? require("include-footer.php") ?>

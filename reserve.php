@@ -11,11 +11,15 @@ $p = new Portal();
 $u = new User();
 
 $portal = $p->getPortalBySubdomain();
-$assets = $p->portalAssets($portal);
+date_default_timezone_set($portal->timezone);
 
+$assets = $p->portalAssets($portal);
+$allowBooking = true;
+$now = date('Y-m-d H:i:s', time());
 
 $recurringId = $_GET['r'];
 $id = $_GET['i'];
+
 
 if($recurringId){
     $appointments = $p->getSlotById($id);
@@ -31,6 +35,8 @@ if($recurringId){
             $data->dateFormat = 'l, F d, Y';
         }
 
+        $data->details = $core->calculateDateDiff($now, $data->info->time24);
+
         if($_COOKIE['user']){
             $data->customer = $p->getCustomerOverviewByID($_COOKIE['user']);
             $data->customerName = $p->customerName($customer);
@@ -40,7 +46,7 @@ if($recurringId){
         }
 
         $showAppointments = true;
-        $core->console($data);
+
     } else {
         $showAppointments = false;
     }
@@ -48,7 +54,7 @@ if($recurringId){
     $showAppointments = false;
 }
 
-
+$core->console($data);
 
 
 
@@ -125,6 +131,7 @@ if($recurringId){
                                 </div>
                             </div>
                         </div>
+                        <? if($data->details->totalHours >= $data->info->fewerThanLimit){ ?>
                         <div class="column halfs">
                             <div class="padded">
                                 <p>Enter your details below:</p>
@@ -172,6 +179,16 @@ if($recurringId){
                                 </form>
                             </div>
                         </div>
+                        <? } else { ?>
+                        <div class="column halfs"
+                            <section>
+                                <div class="none appointments">
+                                    <p>You cannot reserve this time slot.  Appointments must be booked greater than <?=$data->info->fewerThanLimit?> hours in advance.</p>
+                                    <p><a href="/book?id=<?=$data->info->recurringId?>">&lsaquo; View other time slots</a></p>
+                                </div>
+                            </section>
+                        </div>
+                        <? } ?>
                     </div>
                 </div>
             </div>
@@ -216,6 +233,9 @@ if($recurringId){
 
                 if(errors === 0){
                     var appointment = {};
+                    var startDateTime = moment('<?=$data->info->startDate?> <?=$data->info->startTime?>').unix();
+                    var endDateTime = moment('<?=$data->info->startDate?> <?=$data->info->startTime?>').add(<?=$data->info->duration?>, '<?=$data->info->durationType?>').unix();
+                    
                     appointment.emailAddress = form[2].value;
                     appointment.firstName = form[0].value;
                     appointment.lastName = form[1].value;
@@ -224,7 +244,12 @@ if($recurringId){
                     appointment.recurringId = '<?=$data->info->recurringId?>';
                     appointment.customerId = <?=$_COOKIE['user'] ? $_COOKIE['user'] : 0?>;
                     appointment.startDate = moment('<?=$data->info->startDate?> <?=$data->info->startTime?>').format("YYYY-MM-DD HH:mm:ss");
-                    appointment.endDate = moment(appointment.startDate).add(<?=$data->info->duration?>, '<?=$data->info->durationType?>').format("YYYY-MM-DD HH:mm:ss");
+                    appointment.endDate = moment('<?=$data->info->startDate?> <?=$data->info->startTime?>').add(<?=$data->info->duration?>, '<?=$data->info->durationType?>').format("YYYY-MM-DD HH:mm:ss");
+                    appointment.startDateTime = startDateTime;
+                    appointment.endDateTime = endDateTime;
+                    appointment.startDate1 = moment.unix(startDateTime).format("YYYY-MM-DD HH:mm:ss");
+                    appointment.endDate1 = moment.unix(endDateTime).format("YYYY-MM-DD HH:mm:ss");
+                    appointment.workflowTemplateId = <?=$data->info->workflowTemplateId?>;
 
                     $.ajax({
                         url: "<?=API?>/appointments/reserve",

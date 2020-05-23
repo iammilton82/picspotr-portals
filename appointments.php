@@ -21,7 +21,7 @@ $appointments = $p->getAvailableAppointments($portal->photographerId);
 if($appointments && sizeof($appointments)>0){
     $byDates = _::groupBy($appointments, 'recurringId');
     $showAppointments = true;
-    $core->console($byDates);
+
 } else {
     $showAppointments = false;
 }
