@@ -18,10 +18,11 @@ $recurringId = $_GET['r'];
 $id = $_GET['i'];
 
 if($recurringId){
-    $appointments = $p->getAnySlotById($id);
-    if($appointments && sizeof($appointments)>0){
+    $appointments = $p->getSlotById($id);
+
+    if($appointments){
         $data = new stdClass();
-        $data->info = $appointments[0];
+        $data->info = $appointments;
         $data->hasAddress = $p->hasLocationAddress($data->info);
         $data->portal = $portal;
         $data->hasCustomer = $_COOKIE['user'] ? true : false;
@@ -98,8 +99,8 @@ if($recurringId){
                                     <p style="font-size: 3em; padding-top: 1em; margin-bottom: .4em; color: #<?=$assets->primaryColor?>;"><i class="fas fa-check-circle"></i></p>
                                     <h2 class="summary" style="margin-bottom: .3em;">Your event is booked!</h2>
                                     <div><strong><?=$data->info->title?></strong></div>
-                                    <div><?=date( $data->dateFormat, strtotime($data->info->startDate) )?></div>
-                                    <div><?=$data->info->startTime." &mdash; ",$data->info->duration." ".$data->info->durationType?></div>
+                                    <div><?=date( $data->dateFormat, strtotime($data->info->block->startDate) )?></div>
+                                    <div><?=$data->info->block->startTime." &mdash; ",$data->info->duration." ".$data->info->durationType?></div>
                                     <p>&nbsp;</p>
                                     <ul>
                                         <? if($data->hasAddress){ ?>

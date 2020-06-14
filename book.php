@@ -22,20 +22,20 @@ $today = date('Y-m-d', time());
 
 if($recurringId){
     $appointments = $p->getAvailableTimeSlots($recurringId);
+    
+    
+
     if($appointments && sizeof($appointments)>0){
         $data = new stdClass();
         $data->info = $appointments[0];
-        $list = array();
-        for($i=0; $i<sizeof($appointments); $i++){
-            $appointment = $appointments[$i];
-            
-            if($appointment->date >= $today){
-                array_push($list, $appointment);
-            }
-        }
-        if(sizeof($list)>0){
+
+        
+        
+        if(sizeof($data->info->availability)>0){
            
-            $data->dates = _::groupBy($list, 'startDate');
+            $data->startDate = $data->info->availability[0]->startDate;
+
+            $data->dates = _::groupBy($data->info->availability, 'startDate');
             $data->hasAddress = $p->hasLocationAddress($data->info);
             $data->portal = $portal;
             if($data->portal->country !== 'USA'){
@@ -43,6 +43,8 @@ if($recurringId){
             } else {
                 $data->dateFormat = 'l, F d, Y';
             }
+
+            $core->console($data);
 
             $showAppointments = true;
         } else {
@@ -71,7 +73,7 @@ if($recurringId){
     <link rel="stylesheet" type="text/css" media="all" href="/node_modules/pg-calendar/dist/css/pignose.calendar.min.css" />
 	<link rel="stylesheet" type="text/css" media="all" href="<?=APP?>/assets/css/build.css?v=<?=VERSION?>" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script type="text/javascript" src="/node_modules/pg-calendar/dist/js/pignose.calendar.full.min.js"></script>
+    <script type="text/javascript" src="/node_modules/pg-calendar/dist/js/pignose.calendar.full.js"></script>
 
 	<? include("include-tracking.php"); ?>
     
@@ -213,6 +215,16 @@ if($recurringId){
 <script type="text/javascript">
 $(function() {
     $('.calendar').pignoseCalendar({
+        init: function(context){
+            console.log(context);
+            if(context.current[0]._i == '<?=$data->startDate?>'){
+                var selectedDate = '<?=date('Y-m-d', strtotime($data->startDate))?>';
+                $("#none-to-book").removeClass("show").addClass("hide");
+                $("[rel='"+selectedDate+"']").removeClass("hide").addClass("show");
+            } else {
+                $("#none-to-book").removeClass("hide").addClass("show");
+            }
+        },
         select: function(date, context){
             if(date[0] !== null){
                 $(".available-dates").removeClass("show").addClass("hide");
@@ -231,15 +243,17 @@ $(function() {
         },
         toggle: false,
         schedules: [
-            <? foreach($data->dates as $date){ ?>
+            <? foreach($data->dates as $date){ 
+                foreach($date as $day){
+                ?>
             {
-                name: '<?=$date[0]->title?>',
-                date: '<?=$date[0]->date?>'
+                name: "<?=$data->info->title?>",
+                date: '<?=$day->date?>'
             },
-            <? } ?>
+            <? } } ?>
         ],
         <? if($data->info->isRecurring === 0){ ?>
-        date: moment('<?=$data->info->startDate?>'),    
+        date: moment('<?=$data->startDate?>'),    
         <? } ?>
     });
 });

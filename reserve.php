@@ -23,9 +23,10 @@ $id = $_GET['i'];
 
 if($recurringId){
     $appointments = $p->getSlotById($id);
-    if($appointments && sizeof($appointments)>0){
+
+    if($appointments && sizeof($appointments->availability)>0){
         $data = new stdClass();
-        $data->info = $appointments[0];
+        $data->info = $appointments;
         $data->hasAddress = $p->hasLocationAddress($data->info);
         $data->portal = $portal;
         $data->hasCustomer = $_COOKIE['user'] ? true : false;
@@ -35,7 +36,7 @@ if($recurringId){
             $data->dateFormat = 'l, F d, Y';
         }
 
-        $data->details = $core->calculateDateDiff($now, $data->info->time24);
+        $data->details = $core->calculateDateDiff($now, $data->info->block->time24);
 
         if($_COOKIE['user']){
             $data->customer = $p->getCustomerOverviewByID($_COOKIE['user']);
@@ -54,7 +55,6 @@ if($recurringId){
     $showAppointments = false;
 }
 
-$core->console($data);
 
 
 
@@ -104,8 +104,8 @@ $core->console($data);
                                     <h1 class="title"><?=$data->info->title?></h1>
                                     <ul>
                                         <li id="duration" class="row">
-                                            <div><strong><?=date( $data->dateFormat, strtotime($data->info->startDate) )?></strong></div>
-                                            <i class="far fa-stopwatch"></i> <?=$data->info->startTime." &mdash; ",$data->info->duration." ".$data->info->durationType?> 
+                                            <div><strong><?=date( $data->dateFormat, strtotime($data->info->block->startDate) )?></strong></div>
+                                            <i class="far fa-stopwatch"></i> <?=$data->info->block->startTime." &mdash; ",$data->info->duration." ".$data->info->durationType?> 
                                         </li>
 
                                         <? if($data->hasAddress){ ?>
@@ -233,18 +233,18 @@ $core->console($data);
 
                 if(errors === 0){
                     var appointment = {};
-                    var startDateTime = moment('<?=$data->info->startDate?> <?=$data->info->startTime?>').unix();
-                    var endDateTime = moment('<?=$data->info->startDate?> <?=$data->info->startTime?>').add(<?=$data->info->duration?>, '<?=$data->info->durationType?>').unix();
+                    var startDateTime = moment('<?=$data->info->block->startDate?> <?=$data->info->block->startTime?>').unix();
+                    var endDateTime = moment('<?=$data->info->block->startDate?> <?=$data->info->block->startTime?>').add(<?=$data->info->duration?>, '<?=$data->info->durationType?>').unix();
                     
                     appointment.emailAddress = form[2].value;
                     appointment.firstName = form[0].value;
                     appointment.lastName = form[1].value;
-                    appointment.scheduleId = <?=$data->info->id?>;
+                    appointment.scheduleId = <?=$data->info->block->id?>;
                     appointment.photographerId = <?=$data->info->userId?>;
                     appointment.recurringId = '<?=$data->info->recurringId?>';
                     appointment.customerId = <?=$_COOKIE['user'] ? $_COOKIE['user'] : 0?>;
-                    appointment.startDate = moment('<?=$data->info->startDate?> <?=$data->info->startTime?>').format("YYYY-MM-DD HH:mm:ss");
-                    appointment.endDate = moment('<?=$data->info->startDate?> <?=$data->info->startTime?>').add(<?=$data->info->duration?>, '<?=$data->info->durationType?>').format("YYYY-MM-DD HH:mm:ss");
+                    appointment.startDate = moment('<?=$data->info->block->startDate?> <?=$data->info->block->startTime?>').format("YYYY-MM-DD HH:mm:ss");
+                    appointment.endDate = moment('<?=$data->info->block->startDate?> <?=$data->info->block->startTime?>').add(<?=$data->info->duration?>, '<?=$data->info->durationType?>').format("YYYY-MM-DD HH:mm:ss");
                     appointment.startDateTime = startDateTime;
                     appointment.endDateTime = endDateTime;
                     appointment.startDate1 = moment.unix(startDateTime).format("YYYY-MM-DD HH:mm:ss");
@@ -266,7 +266,7 @@ $core->console($data);
                     }).done(function(response){
                         
                         if(response.status === 1 || response.status === true){
-                            window.location.replace("/reserved?i=<?=$data->info->id?>&r=<?=$data->info->recurringId?>");
+                            window.location.replace("/reserved?i=<?=$data->info->block->id?>&r=<?=$data->info->recurringId?>");
                         } else {
                             $("[rel='saving']").removeClass("hide");
                             $('.enableOnInput').prop('disabled', false);
