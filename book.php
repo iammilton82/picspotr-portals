@@ -108,6 +108,11 @@ if($recurringId){
                                 <div class="big-card">
                                     <h1 class="title"><?=$data->info->title?></h1>
                                     <ul>
+	                                    <? if($data->info->isRecurring === 0){ ?>
+	                                    <li>
+	                                    	<h3><?=date($data->dateFormat, strtotime($data->startDate))?></h3>
+	                                    </li>
+	                                    <? } ?>
                                         <li id="duration" class="row">
                                             <i class="far fa-stopwatch"></i> <strong><?=$data->info->duration." ".$data->info->durationType?></strong>
                                         </li>
@@ -144,7 +149,13 @@ if($recurringId){
                         <div id="appointments" class="column halfs">
                             <div class="padded">
                                 <? if(sizeof($data->dates)>0){ ?>
-                                <p>Select an available date and time</p>
+                                
+                                <? if($data->info->isRecurring === 0){ ?>
+                                <p>Select an available time:</p>
+                                <? } else { ?>
+                                <p>Select an available date and time:</p>
+                                <? } ?>
+                                
                                 
                                 <div class="calendar"></div>
                                 
@@ -158,7 +169,10 @@ if($recurringId){
                                     }
                                 ?>
                                 <div rel="<?=$date[0]->date?>" class="available-dates row <?=$date[0]->date === date('Y-m-d', time()) ? 'show' : 'hide' ?>">
+                                    <? if($data->info->isRecurring === 1){ ?>
                                     <h2><?=date($data->dateFormat, strtotime($date[0]->startDate))?></h2>
+                                    <? } ?>
+                                    
                                     <ul class="ps-card-layout">
                                         <? $times = _::indexBy($date, 'startTime');
                                         foreach($times as $d){
@@ -216,13 +230,16 @@ if($recurringId){
 $(function() {
     $('.calendar').pignoseCalendar({
         init: function(context){
-            console.log(context);
             if(context.current[0]._i == '<?=$data->startDate?>'){
                 var selectedDate = '<?=date('Y-m-d', strtotime($data->startDate))?>';
                 $("#none-to-book").removeClass("show").addClass("hide");
                 $("[rel='"+selectedDate+"']").removeClass("hide").addClass("show");
             } else {
                 $("#none-to-book").removeClass("hide").addClass("show");
+            }
+            
+            if(<?=$data->info->isRecurring?> === 0){
+	            $(".calendar > .pignose-calendar").addClass("hide");
             }
         },
         select: function(date, context){
