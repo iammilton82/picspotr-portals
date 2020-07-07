@@ -7,7 +7,7 @@ if (strpos($_SERVER['HTTP_HOST'], 'clientstud-dev.io') !== false) {
     define('API', 'https://dev-api.picspotr.com');
 	define('INVOICES_URL', 'https://dev-api.picspotr.com/invoice');
 	define('QUOTES_URL', 'https://dev-api.picspotr.com/quote');
-	define('CONTRACTS_URL', 'https://dev.picspotr.com/app/agreements');
+	define('CONTRACTS_URL', 'https://dev-api.picspotr.com/agreement/index/');
     define('VERSION', time());
 	define('ROOT', '/Users/designrockstar/Public/picspotr-portals');
 	define('HOTJAR_ID', 1457942);
@@ -18,7 +18,7 @@ if (strpos($_SERVER['HTTP_HOST'], 'clientstud-dev.io') !== false) {
     define('API', 'https://api.picspotr.com');
 	define('INVOICES_URL', 'https://invoices.picspotr.com/invoice');
 	define('QUOTES_URL', 'https://quotes.picspotr.com/quote');
-	define('CONTRACTS_URL', 'https://app.picspotr.com/agreements');
+	define('CONTRACTS_URL', 'https://agreements.picspotr.com/agreement/index/');
     define('VERSION', '1.0');
 	define('ROOT', '/var/www/apps/picspotr-portals/current');
 	define('HOTJAR_ID', 449356);
