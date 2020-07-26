@@ -28,6 +28,8 @@ if($appointments && sizeof($appointments)>0){
 
 
 
+
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -66,11 +68,19 @@ if($appointments && sizeof($appointments)>0){
             <p class="centered">Welcome to my scheduling page. Select an event type below to view my availability.</p>
             <div>
                 <ul class="ps-card-layout">
-                    <? foreach($byDates as $date){ ?>
+                    <? foreach($byDates as $date){ 
+                        $numAvailable = sizeof(_::where($date[0]->availability, ["status" => "free", "bookable" => null]));
+
+                        ?>
                     <li>
                         <div class="padded">
-                            <h3 class="summary"><a href="/book?id=<?=$date[0]->recurringId?>"><?=$date[0]->title?></a></h3>
-                            <div class="description"><strong><?=sizeof($date)?></strong> occurrences starting <?=$date[0]->startDate?></div>
+                            <? if($numAvailable > 0){ ?>
+                                <h3 class="summary"><a href="/book?id=<?=$date[0]->recurringId?>"><?=$date[0]->title?></a></h3>
+                                <div class="description"><strong><?=sizeof($date[0]->availability)?></strong> appointments available starting on <?=$date[0]->availability[0]->startDate?></div>
+                            <? } else { ?>
+                                <h3 class="summary"><?=$date[0]->title?></h3>
+                                There are no appointments available.
+                            <? } ?>
                         </div>
                     </li>
                     <? } ?>
