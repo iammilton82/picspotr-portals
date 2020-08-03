@@ -17,7 +17,7 @@ if (strpos($_SERVER['HTTP_HOST'], 'clientstud-dev.io') !== false) {
     define('APP', 'https://app.picspotr.com');
     define('API', 'https://api.picspotr.com');
 	define('INVOICES_URL', 'https://invoices.picspotr.com/invoice');
-	define('QUOTES_URL', 'https://quotes.picspotr.com/quote');
+	define('QUOTES_URL', 'https://invoices.picspotr.com/quote');
 	define('CONTRACTS_URL', 'https://agreements.picspotr.com/agreement/index/');
     define('VERSION', '1.0');
 	define('ROOT', '/var/www/apps/picspotr-portals/current');
