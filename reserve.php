@@ -20,6 +20,18 @@ $now = date('Y-m-d H:i:s', time());
 $recurringId = $_GET['r'];
 $id = $_GET['i'];
 
+$reschedule = $_GET['reschedule'] ? $_GET['reschedule'] : 0;
+$oldEventId = $_GET['o_eventId'] ? $_GET['o_eventId'] : false;
+$oldCustomerId = $_GET['customerId'] ? $_GET['customerId'] : false;
+$oldTimeSlotId = $_GET['o_timeSlotId'] ? $_GET['o_timeSlotId'] : false;
+
+if($reschedule == 1){
+    if($oldEventId){
+        $oldEvent = $p->getEventDetails($oldEventId);
+        $customer = $oldEvent->customers[0][0];
+
+    }
+}
 
 if($recurringId){
     $appointments = $p->getSlotById($id);
@@ -101,10 +113,20 @@ if($recurringId){
                         <div class="columns">
                             <div class="column halfs">
                                 <div class="padded">
-                                    <div class="big-card">
+                                    <div class="big-card <?= $reschedule == 1 ? 'has-header' : '' ?>">
+
+                                        <? if($reschedule == 1){ ?>
+                                        <div class="alert-header">Re-schedule Appointment Details</div>
+                                        <? } ?>
+
                                         <h1 class="title"><?= $data->info->title ?></h1>
                                         <ul>
                                             <li id="duration" class="row">
+                                                <? if($reschedule == 1){ ?>
+                                                <div>Your new appointment date and time will be</div>
+                                                <? } else { ?>
+                                                <div>Your appointment date and time will be</div>
+                                                <? } ?>
                                                 <div><strong><?= date($data->dateFormat, strtotime($data->info->block->startDate)) ?></strong></div>
                                                 <i class="far fa-stopwatch"></i> <?= $data->info->block->startTime . " &mdash; ", $data->info->duration . " " . $data->info->durationType ?>
                                             </li>
@@ -129,15 +151,49 @@ if($recurringId){
                                             </li>
                                             <? } ?>
                                         </ul>
+
+                                        <p>&nbsp;</p>
+                                        <? if($reschedule == 1){ ?>
+                                        <ul class="cancelled-appointment">
+                                            <li class="bottom-border">Former Appointment</li>
+                                            <li id="duration" class="row">
+                                                <div><strong><?= date($data->dateFormat, strtotime($oldEvent->startDate1)) ?></strong></div>
+                                                <i class="far fa-stopwatch"></i> <?= $oldEvent->appointment->startTime . " &mdash; ", $data->info->duration . " " . $data->info->durationType ?>
+                                            </li>
+                                        </ul>
+                                        <? } ?>
+
                                     </div>
                                 </div>
                             </div>
                             <? if($data->details->totalHours >= $data->info->fewerThanLimit){ ?>
                             <div class="column halfs">
                                 <div class="padded">
-                                    <p>Enter your details below:</p>
+                                    
                                     <form name="scheduleAppointment">
                                         <fieldset>
+                                            <? if($reschedule == 1){ ?>
+
+                                            <input type="hidden" name="fName" value="<?=$customer->firstName?>" />
+                                            <input type="hidden" name="lName" value="<?=$customer->lastName?>" />
+                                            <input type="hidden" name="email" value="<?=$customer->emailAddress?>" />
+                                            <input type="hidden" name="telephone" value="<?=$customer->telephone ? $customer->telephone : null ?>" />
+
+                                            <div class="row">
+                                                <p>Click the "Re-schedule Appointment" button below to confirm</p>
+                                            </div>
+
+                                            <div class="action-button">
+                                                <button class="enableOnInput" type="submit">Re-schedule Appointment</button>
+                                                <div role="alert">
+                                                    <div rel="system" class="message hide" message="required">A system error occurred and we could not save your appointment. Send an email to <?= $data->portal->emailAddress ?> for assistance.</div>
+                                                    <div rel="saving" class="message hide" message="required">An error occurred and we could not reserve this appointment. Send an email to <?= $data->portal->emailAddress ?> for assistance.</div>
+                                                </div>
+                                            </div>
+
+                                            <? } else { ?>
+                                            <p>Enter your details below:</p>
+
                                             <div class="row">
                                                 <div class="field">
                                                     <input class="has-data" type="text" name="fName" value="" required />
@@ -169,23 +225,25 @@ if($recurringId){
                                                 </div>
                                             </div>
                                             <div class="action-button">
-                                                <button class="enableOnInput" type="submit">Schedule Event</button>
+                                                <button class="enableOnInput" type="submit">Schedule Appointment</button>
                                                 <div role="alert">
                                                     <div rel="system" class="message hide" message="required">A system error occurred and we could not save your appointment. Send an email to <?= $data->portal->emailAddress ?> for assistance.</div>
                                                     <div rel="saving" class="message hide" message="required">An error occurred and we could not reserve this appointment. Send an email to <?= $data->portal->emailAddress ?> for assistance.</div>
                                                 </div>
                                             </div>
+                                            <? } ?>
 
                                         </fieldset>
                                     </form>
                                 </div>
                             </div>
                             <? } else { ?>
-                            <div class="column halfs" <section>
-                                <div class="none appointments">
-                                    <p>You cannot reserve this time slot. Appointments must be booked greater than <?= $data->info->fewerThanLimit ?> hours in advance.</p>
-                                    <p><a href="/book?id=<?= $data->info->recurringId ?>">&lsaquo; View other time slots</a></p>
-                                </div>
+                            <div class="column halfs"> 
+                                <section>
+                                    <div class="none appointments">
+                                        <p>You cannot reserve this time slot. Appointments must be booked greater than <?= $data->info->fewerThanLimit ?> hours in advance.</p>
+                                        <p><a href="/book?id=<?= $data->info->recurringId ?>">&lsaquo; View other time slots</a></p>
+                                    </div>
                                 </section>
                             </div>
                             <? } ?>
@@ -251,8 +309,14 @@ if($recurringId){
                         appointment.endDate1 = moment.unix(endDateTime).format("YYYY-MM-DD HH:mm:ss");
                         appointment.workflowTemplateId = <?= $data->info->workflowTemplateId ?>;
 
+                        <? if($reschedule == 1){ ?>
+                        var postURL = "<?=API?>/appointments/reschedule/<?=$data->info->userId?>/<?=$oldCustomerId?>/<?=$oldEventId?>/<?=$oldTimeSlotId?>";
+                        <? } else { ?>
+                        var postURL = "<?=API?>/appointments/reserve";
+                        <? } ?>
+
                         $.ajax({
-                            url: "<?= API ?>/appointments/reserve",
+                            url: postURL,
                             method: "POST",
                             data: appointment,
                             dataType: 'json',
@@ -266,7 +330,14 @@ if($recurringId){
                         }).done(function(response) {
 
                             if (response.status === 1 || response.status === true) {
-                                window.location.replace("/reserved?i=<?= $data->info->block->id ?>&r=<?= $data->info->recurringId ?>");
+
+                                <? if($reschedule == 1){ ?>
+                                var confirmationURL = "/reserved?i=<?= $data->info->block->id ?>&r=<?= $data->info->recurringId ?>&reschedule=1";
+                                <? } else { ?>
+                                var confirmationURL = "/reserved?i=<?= $data->info->block->id ?>&r=<?= $data->info->recurringId ?>";
+                                <? } ?>
+
+                                window.location.replace(confirmationURL);
                             } else {
                                 $("[rel='saving']").removeClass("hide");
                                 $('.enableOnInput').prop('disabled', false);

@@ -51,7 +51,6 @@ if($recurringId){
     $showAppointments = false;
 }
 
-$core->console($portal);
 
 
 

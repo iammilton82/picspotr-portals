@@ -19,6 +19,8 @@ $event = $p->getEventDetails($_GET['eventId']);
 $myEvent = $p->eventHasMyCustomerId($event, $_COOKIE['user']);
 $hasAddress = $p->hasLocationAddress($event);
 
+$core->console($event);
+
 date_default_timezone_set($portal->timezone);
 
 $u->checkAuth($customer);
@@ -96,6 +98,8 @@ $u->checkAuth($customer);
 				                            <div class="padded">
 				                                <span class="content-label">Date</span>
 												<?=$p->returnEventTime($event)?>
+
+												
 				                            </div>
 			                            </div>
 
