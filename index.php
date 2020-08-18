@@ -133,8 +133,6 @@ $assets = $p->portalAssets($portal);
 					Cookies.set('Timezone', response.data.photographer.timezone);
 					Cookies.set('TimezoneOffset', new Date().getTimezoneOffset());
 
-					__insp.push(['tagSession', { email: response.data.client.emailAddress, userid: response.data.client.id, fullName: response.data.client.fullName, type: 'client' }]);
-
 					// This is an example script - don't forget to change it!
 					FS.identify(response.data.client.id, {
 						displayName: response.data.client.fullName,

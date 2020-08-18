@@ -12,6 +12,7 @@ if (strpos($_SERVER['HTTP_HOST'], 'clientstud-dev.io') !== false) {
 	define('ROOT', '/Users/designrockstar/Public/picspotr-portals');
 	define('HOTJAR_ID', 1457942);
 	define('HOTJAR_VERSION', 6);
+	define('URL', 'clientstud-dev.io');
 } else {
 	define('ENVIRONMENT', 'production');
     define('APP', 'https://app.picspotr.com');
@@ -23,4 +24,5 @@ if (strpos($_SERVER['HTTP_HOST'], 'clientstud-dev.io') !== false) {
 	define('ROOT', '/var/www/apps/picspotr-portals/current');
 	define('HOTJAR_ID', 449356);
 	define('HOTJAR_VERSION', 6);
+	define('URL', 'clientstud-dev');
 }
