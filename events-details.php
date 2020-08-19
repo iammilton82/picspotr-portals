@@ -20,6 +20,7 @@ $myEvent = $p->eventHasMyCustomerId($event, $_COOKIE['user']);
 $hasAddress = $p->hasLocationAddress($event);
 
 $core->console($event);
+$core->console($customer);
 
 date_default_timezone_set($portal->timezone);
 
@@ -99,7 +100,13 @@ $u->checkAuth($customer);
 				                                <span class="content-label">Date</span>
 												<?=$p->returnEventTime($event)?>
 
-												
+												<? if($event->appointment != false){ ?>
+												<p>&nbsp;</p>	
+												<div class="action-button">
+													<a href="/reschedule?i=<?=$event->appointment->id?>&r=<?=$event->appointment->recurringId?>&c=<?=$customer->id?>&e=<?=$event->id?>">Re-schedule</a>
+													<a href="/cancel?i=<?=$event->appointment->id?>&r=<?=$event->appointment->recurringId?>&c=<?=$customer->id?>&e=<?=$event->id?>">Cancel</a>
+												</div>
+												<? } ?>
 				                            </div>
 			                            </div>
 

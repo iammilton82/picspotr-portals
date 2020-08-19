@@ -93,8 +93,8 @@ if($recurringId){
 
         <? if($_COOKIE['user']){ ?>
         <header id="main-header" class="row">
-            <div class="back-button"><a href="/appointments">Back</a></div>
-            <div class="title">Schedule an Appointment</div>
+            <div class="back-button"><a href="/events-details?eventId=<?=$eventId?>">Back</a></div>
+            <div class="title">Re-schedule an Appointment</div>
             <div class="actions">
                 <div class="action-button">
                     
