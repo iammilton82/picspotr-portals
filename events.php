@@ -48,7 +48,7 @@ $u->checkAuth($customer);
 				<div class="actions">
 					<div class="action-button">
 						<? if($portal->calendly !== false){ ?>
-						<a target="_blank" href="<?=$portal->calendly->calendlyURL?>">Schedule an Appointment</a>
+						<a target="_blank" href="<?=$portal->calendly->calendlyURL?>">Schedule on Calendly</a>
 						<? } ?>
 						<? if($appointments && sizeof($appointments)>0){ ?>
 						<a href="/appointments">Schedule an Appointment</a>
