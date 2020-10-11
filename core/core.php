@@ -179,10 +179,10 @@ class Portal {
 	    Unirest\Request::verifyPeer(false);
 	    $url = API."/user/getPortalBySubdomain/".urlencode(SUBDOMAIN);
 		$request = Unirest\Request::get($url, array("Accept" => "application/json"));
-
+		
 		if($request->code == 200){
 			$d = json_decode($request->raw_body);
-
+			
 			if($d->status === 1 || $d->status === true){
 				$data = $d->data;
 			} else {

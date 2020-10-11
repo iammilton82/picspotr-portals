@@ -1,7 +1,7 @@
 <?
 define('AWS', 'https://s3.amazonaws.com/PicSpotr-com');
 
-if (strpos($_SERVER['HTTP_HOST'], 'clientstud-dev.io') !== false) {
+if (strpos($_SERVER['HTTP_HOST'], 'clientstud.dev') !== false) {
     define('ENVIRONMENT', 'development');
     define('APP', 'https://dev-app.picspotr.com');
     define('API', 'https://dev-api.picspotr.com');
@@ -12,7 +12,8 @@ if (strpos($_SERVER['HTTP_HOST'], 'clientstud-dev.io') !== false) {
 	define('ROOT', '/Users/designrockstar/Public/picspotr-portals');
 	define('HOTJAR_ID', 1457942);
 	define('HOTJAR_VERSION', 6);
-	define('URL', 'clientstud-dev.io');
+	define('URL', 'clientstud.dev');
+	define('SQUAREUP_APP', 'sandbox-sq0idb-G8TeWp0yhcSJzsHusXTfUQ');
 } else {
 	define('ENVIRONMENT', 'production');
     define('APP', 'https://app.picspotr.com');
@@ -24,5 +25,7 @@ if (strpos($_SERVER['HTTP_HOST'], 'clientstud-dev.io') !== false) {
 	define('ROOT', '/var/www/apps/picspotr-portals/current');
 	define('HOTJAR_ID', 449356);
 	define('HOTJAR_VERSION', 6);
-	define('URL', 'clientstud-dev');
+	define('URL', 'clientstud.io');
+	define('SQUAREUP_APP', 'sq0idp-ETBAwJ3j3xTX2j9EALEpwA');
 }
+

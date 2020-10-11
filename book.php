@@ -29,8 +29,6 @@ if($recurringId){
         $data = new stdClass();
         $data->info = $appointments[0];
 
-        
-        
         if(sizeof($data->info->availability)>0){
            
             $data->startDate = $data->info->availability[0]->startDate;
@@ -43,9 +41,7 @@ if($recurringId){
             } else {
                 $data->dateFormat = 'l, F d, Y';
             }
-
-            $core->console($data);
-
+            
             $showAppointments = true;
         } else {
             $showAppointments = false;
@@ -72,8 +68,6 @@ if($recurringId){
     <link rel="stylesheet" href="https://use.typekit.net/qju2ojt.css">
     <link rel="stylesheet" type="text/css" media="all" href="/node_modules/pg-calendar/dist/css/pignose.calendar.min.css" />
 	<link rel="stylesheet" type="text/css" media="all" href="<?=APP?>/assets/css/build.css?v=<?=VERSION?>" />
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script type="text/javascript" src="/node_modules/pg-calendar/dist/js/pignose.calendar.full.js"></script>
 
 	<? include("include-tracking.php"); ?>
     
@@ -119,12 +113,14 @@ if($recurringId){
 
                                         <? if($data->info->description){ ?>
                                         <li class="description">
+                                            <label>Description</label>
                                             <?=$data->info->description?>
                                         </li>
                                         <? } ?>
 
                                         <? if($data->hasAddress){ ?>
                                         <li>
+                                            <label>Location</label>
                                             <? if(strlen($data->info->location)>0){?>
                                             <div><strong><?=$data->info->location?></strong></div>
                                             <? } ?>
@@ -140,6 +136,13 @@ if($recurringId){
                                             <?=strlen($data->info->zipCode)>0 ? $data->info->zipCode : ""?>
                                             </div>
                                             <? } ?>
+                                        </li>
+                                        <? } ?>
+                                        
+                                        <? if($data->info->paymentRequired === 1){ ?>
+                                        <li>
+                                            <label>Payment Information</label>
+                                            <div>A payment of <?=$data->info->paymentAmount?> is required to reserve this appointment.</div>
                                         </li>
                                         <? } ?>
                                     </ul>
