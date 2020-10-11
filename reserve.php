@@ -67,7 +67,6 @@ if($recurringId){
     $showAppointments = false;
 }
 
-$core->console($data);
 
 
 

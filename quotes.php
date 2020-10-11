@@ -16,7 +16,6 @@ $assets = $p->portalAssets($portal);
 $customerName = $p->customerName($customer);
 
 # $core->console($portal);
-$core->console($customer->quotes);
 
 $u->checkAuth($customer);
 
