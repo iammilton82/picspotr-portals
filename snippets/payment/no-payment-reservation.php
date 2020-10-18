@@ -110,6 +110,33 @@
 			}).done(function(response) {
 
 				if (response.status === 1 || response.status === true) {
+					
+					
+					// **************  add to alert log
+					var alert = {};
+					alert.userId = appointment.photographerId;
+					alert.documentId = response.data.id;
+					alert.contentType = 'event';
+					alert.itemRead = 0;
+					alert.deleted = 0;
+					alert.type = 'action';
+					alert.content = appointment.firstName+" "+appointment.lastName+" has booked <?=$data->info->title?> for "+appointment.startDate+".";
+					
+					$.ajax({
+						url: "<?=API?>/v2/public/alerts/save",
+						method: "POST",
+						data: alert,
+						dataType: 'json',
+						async: false,
+						crossDomain: true,
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+							'X-ACCESS_TOKEN': '1403b8cc3cdaf3f01361daefeeb8c182adcb6286',
+							'TimezoneOffset': new Date().getTimezoneOffset()
+						}
+					});
+					
+					
 
 					<? if($reschedule == 1){ ?>
 					var confirmationURL = "/reserved?i=<?= $data->info->block->id ?>&r=<?= $data->info->recurringId ?>&reschedule=1";

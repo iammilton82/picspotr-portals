@@ -257,7 +257,7 @@ if($recurringId){
                                                                     break; 
                                                                     */
                                                                     default:
-                                                                        include("snippets/no-payment-reservation.php");
+                                                                        include("snippets/payment/no-payment-reservation.php");
                                                                     break;
                                                                 }				
                                                             
@@ -267,7 +267,7 @@ if($recurringId){
                                                     </div>
                                                     <? }?>
                                                 <? } else { ?>
-                                                <? include("snippets/no-payment-reservation.php"); ?>
+                                                <? include("snippets/payment/no-payment-reservation.php"); ?>
                                                 <? } ?>
                                             <? } ?>
 
