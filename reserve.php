@@ -278,7 +278,7 @@ if($recurringId){
                                                         alert.itemRead = 0;
                                                         alert.deleted = 0;
                                                         alert.type = 'action';
-                                                        alert.content = appointment.firstName+" "+appointment.lastName+" has booked <?=$data->info->title?> for "+appointment.startDate+" and paid the session fee.";
+                                                        alert.content = appointment.firstName+" "+appointment.lastName+" has rescheduled <?=$data->info->title?> for "+appointment.startDate+".";
                                                         
                                                         $.ajax({
                                                             url: "<?=API?>/v2/public/alerts/save",
@@ -304,7 +304,7 @@ if($recurringId){
                                                             
                                                         }).fail(function(){
                                                             
-                                                            $(errorDiv).html("<div class='alert error'><p>Your payment was processed and your appointment has been booked but a system error occurred.  Please contact technical support.</p></div>");
+                                                            $(errorDiv).html("<div class='alert error'><p>Your appointment has been booked but a system error occurred.  Please contact technical support.</p></div>");
                                                             $('#sTSubmit').prop('disabled', false);
                                                             
                                                         });

@@ -63,6 +63,9 @@ if(response.status === 1 ||  response.status === true){
 				}
 			});
 			
+			var bookedDate = moment(appointment.startDate).format("DD MMMM YYYY");
+			var bookedTime = moment(appointment.startDate).format("hA");
+			
 			// **************  add to alert log
 			var alert = {};
 			alert.userId = appointment.photographerId;
@@ -71,7 +74,7 @@ if(response.status === 1 ||  response.status === true){
 			alert.itemRead = 0;
 			alert.deleted = 0;
 			alert.type = 'action';
-			alert.content = appointment.firstName+" "+appointment.lastName+" has booked <?=$data->info->title?> for "+appointment.startDate+" and paid the session fee.";
+			alert.content = appointment.firstName+" "+appointment.lastName+" has booked <?=$data->info->title?> for "+bookedDate+" at "+bookedTime+" and paid the session fee.";
 			
 			$.ajax({
 				url: "<?=API?>/v2/public/alerts/save",
