@@ -42,6 +42,8 @@ if($recurringId){
                 $data->dateFormat = 'l, F d, Y';
             }
             
+            $data->info->isRecurring = sizeof($data->dates) > 1 ? true : $data->info->isRecurring;
+            
             $showAppointments = true;
         } else {
             $showAppointments = false;
@@ -53,6 +55,10 @@ if($recurringId){
 } else {
     $showAppointments = false;
 }
+
+
+
+$core->console($data);
 
 ?>
 <!doctype html>
