@@ -91,10 +91,16 @@ if(response.status === 1 ||  response.status === true){
 			}).done(function(response){
 				
 				<? if($reschedule == 1){ ?>
-				var confirmationURL = "/reserved?i=<?= $data->info->block->id ?>&r=<?= $data->info->recurringId ?>&reschedule=1";
-				<? } else { ?>
-				var confirmationURL = "/reserved?i=<?= $data->info->block->id ?>&r=<?= $data->info->recurringId ?>";
-				<? } ?>
+					var confirmationURL = "/reserved?i=<?= $data->info->block->id ?>&r=<?= $data->info->recurringId ?>&reschedule=1";
+					<? } else { 
+						if($data->info->successRedirect === 1 && strlen($data->info->successURL)>5){
+					?>
+						var confirmationURL = "<?=$data->info->successURL?>";
+					<?
+						} else {
+						?>
+					var confirmationURL = "/reserved?i=<?= $data->info->block->id ?>&r=<?= $data->info->recurringId ?>";
+					<? } } ?>
 
 				window.location.replace(confirmationURL);
 				

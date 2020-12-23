@@ -39,3 +39,11 @@ window['_fs_namespace'] = 'FS';
 <script type="text/javascript" src="<?=APP?>/node_modules/underscore/underscore-min.js"></script>
 <script type="text/javascript" src="<?=APP?>/assets/js/jquery.payment.js"></script>
 <script type="text/javascript" src="/assets/globals.js"></script>
+
+<?
+
+if(isset($portal->headerPixels)){
+    echo $portal->headerPixels;
+}
+
+?>
