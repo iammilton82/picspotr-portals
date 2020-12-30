@@ -50,7 +50,7 @@ class Core {
 				- $time->months*30*60*60*24 - $time->days*60*60*24 
 						- $time->hours*60*60 - $time->minutes*60));  
 
-		$time->totalHours = ($time->days * 24) + $time->hours;
+		$time->totalHours = floor((strtotime($date2) - strtotime($date1)) / (60*60));
 
 		$time->date1 = $date1;
 		$time->date2 = $date2;
