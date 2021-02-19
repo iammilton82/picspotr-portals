@@ -66,8 +66,8 @@ $u->checkAuth($customer);
 						<div id="card-carousel" class="event-cards">
 							<?
 							foreach($customer->events->list as $event){
-								$month = date('M', $event->startDateTime);
-								$day = date('d', $event->startDateTime);
+								$month = date('M', strtotime($event->startDate1));
+								$day = date('d', strtotime($event->startDate1));
 								if($event->allDay === 1 || $event->allDay === true){
 									$time = "All Day";
 								} else {

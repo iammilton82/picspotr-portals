@@ -419,9 +419,12 @@ class Portal {
 	public function returnEventTime($event){
 		$eventDate = "";
 		$today = date('m/d/y', time());
-
-		$start = $event->startDateTime;
-		$end = $event->endDateTime;
+		
+		$core = new Core();
+		$core->console($event);
+		
+		$start = strtotime($event->startDate1);
+		$end = strtotime($event->endDate1);
 		$allDay = $event->allDay;
 
 		// check if the event is today
