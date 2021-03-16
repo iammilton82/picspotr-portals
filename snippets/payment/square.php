@@ -77,7 +77,7 @@ if($data->info->paymentConfig->version == 2){
 				var loader = $(".loading");
 				var totalId = $("#invoiceTotal");
 				var payForm = $("#payForm");
-				var totalAmount = $("input[name='cc-amountpaid']").val();
+				var totalAmount = $("input[name='cc-amountpaid']").val() * 100;
 				var errorDiv = $("#errors");
 				var token = nonce;
 				var firstName = $("[name='fName']").val();
