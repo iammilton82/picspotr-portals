@@ -138,7 +138,7 @@ $u->checkAuth($customer);
 																?>
 																<tr>
 																	<td class="main" data-column="Title">
-																		<a target="_blank" href="<?=CONTRACTS_URL."/?id=".$contracts->id."&cid=".$_COOKIE['user']."&x=62608e08adc29a8d6dbc9754e659f125"?>"><strong><?=strlen($contracts->title)>1 ? $contracts->title : "No contract title provided"?></strong></a>
+																		<a target="_blank" href="<?=CONTRACTS_URL.$contracts->id."/".$_COOKIE['user']."/62608e08adc29a8d6dbc9754e659f125"?>"><strong><?=strlen($contracts->title)>1 ? $contracts->title : "No contract title provided"?></strong></a>
 																	</td>
 																	<td data-column="Effective Date"><?=date('l, F d, Y', $contracts->effectiveDate)?></td>
 																	<td data-column="Status">
