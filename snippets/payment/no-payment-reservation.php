@@ -80,7 +80,7 @@
 			appointment.scheduleId = <?= $data->info->block->id ?>;
 			appointment.photographerId = <?= $data->info->userId ?>;
 			appointment.recurringId = '<?= $data->info->recurringId ?>';
-			appointment.customerId = <?= $_COOKIE['user'] ? $_COOKIE['user'] : 0 ?>;
+			appointment.customerId = <?= isset($_COOKIE['user']) ? $_COOKIE['user'] : 0 ?>;
 			appointment.startDate = moment('<?= $data->info->block->startDate ?> <?= $data->info->block->startTime ?>').format("YYYY-MM-DD HH:mm:ss");
 			appointment.endDate = moment('<?= $data->info->block->startDate ?> <?= $data->info->block->startTime ?>').add(<?= $data->info->duration ?>, '<?= $data->info->durationType ?>').format("YYYY-MM-DD HH:mm:ss");
 			appointment.startDateTime = startDateTime;

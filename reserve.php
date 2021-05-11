@@ -20,10 +20,10 @@ $now = date('Y-m-d H:i:s', time());
 $recurringId = $_GET['r'];
 $id = $_GET['i'];
 
-$reschedule = $_GET['reschedule'] ? $_GET['reschedule'] : 0;
-$oldEventId = $_GET['o_eventId'] ? $_GET['o_eventId'] : false;
-$oldCustomerId = $_GET['customerId'] ? $_GET['customerId'] : false;
-$oldTimeSlotId = $_GET['o_timeSlotId'] ? $_GET['o_timeSlotId'] : false;
+$reschedule = isset($_GET['reschedule']) ? $_GET['reschedule'] : 0;
+$oldEventId = isset($_GET['o_eventId']) ? $_GET['o_eventId'] : false;
+$oldCustomerId = isset($_GET['customerId']) ? $_GET['customerId'] : false;
+$oldTimeSlotId = isset($_GET['o_timeSlotId']) ? $_GET['o_timeSlotId'] : false;
 
 if($reschedule == 1){
     if($oldEventId){
