@@ -50,7 +50,7 @@ if(response.status === 1 ||  response.status === true){
 			payment.description = "Payment for <?=$data->info->title?>";
 			
 			$.ajax({
-				url: "<?=API?>/Payment/save",
+				url: "<?=NODEJS_API?>/payments/save",
 				method: "POST",
 				data: payment,
 				dataType: 'json',

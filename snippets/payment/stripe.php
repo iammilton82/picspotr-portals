@@ -148,7 +148,7 @@
 				var token = response.id;
 
 				$.ajax({
-					url: '<?=API?>/StripeProcessor/oneTimePayment',
+					url: '<?=NODEJS_API?>/payments/stripe/process',
 					beforeSend: function(){
 						$(loader).removeClass("none").addClass("active");
 					},

@@ -86,7 +86,7 @@ if($data->info->paymentConfig->version == 2){
 				var telephone = $("[name='telephone']").val();
 							
 				$.ajax({
-					url: '<?=API?>/squareProcessor/oneTimePayment',
+					url: '<?=NODEJS_API?>/payments/square/process',
 					beforeSend: function(){
 						$(loader).removeClass("none").addClass("active");
 						$("#submit-button").prop('disabled', true);

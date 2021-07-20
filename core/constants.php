@@ -5,6 +5,7 @@ if (strpos($_SERVER['HTTP_HOST'], 'clientstud.dev') !== false) {
     define('ENVIRONMENT', 'development');
     define('APP', 'https://dev-app.picspotr.com');
     define('API', 'https://dev-api.picspotr.com');
+    define('NODEJS_API', 'https://localhost:8080');
 	define('INVOICES_URL', 'https://dev-api.picspotr.com/invoice');
 	define('QUOTES_URL', 'https://dev-api.picspotr.com/quote');
 	define('CONTRACTS_URL', 'https://dev-api.picspotr.com/agreement/index/');
@@ -18,6 +19,7 @@ if (strpos($_SERVER['HTTP_HOST'], 'clientstud.dev') !== false) {
 	define('ENVIRONMENT', 'production');
     define('APP', 'https://app.picspotr.com');
     define('API', 'https://api.picspotr.com');
+    define('NODEJS_API', 'https://shots.picspotr.com');
 	define('INVOICES_URL', 'https://invoices.picspotr.com/invoice');
 	define('QUOTES_URL', 'https://invoices.picspotr.com/quote');
 	define('CONTRACTS_URL', 'https://agreements.picspotr.com/agreement/index/');
