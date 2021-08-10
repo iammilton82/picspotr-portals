@@ -4,6 +4,9 @@ if($data->info->paymentConfig->version == 2){
 } else {
 	$appId = $data->info->paymentConfig->publishableKey;
 }
+
+$core->console($data);
+
 ?>
 
 <script>
@@ -111,6 +114,7 @@ if($data->info->paymentConfig->version == 2){
 					},
 					success: function(response){
 						// record the booked session
+						
 						
 						<? include("snippets/payment/process-appointment.php"); ?>
 						

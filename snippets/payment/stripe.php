@@ -138,7 +138,11 @@
 
 			if (response.error) {
 				// Show the errors on the form
-				$(errorDiv).html("<div class='alert error'><p>We unfortunately could not approve your payment. <br />Please check the card, expiration and CVV to ensure they are correct.</p></div>");
+				var error = "<div class='alert error'><p>We unfortunately could not approve your payment.";
+				console.log(response.error);
+				error += "</div>";
+				
+				$(errorDiv).html(error);
 				$form.find('button').prop('disabled', false);
 				
 				return; 
@@ -173,9 +177,21 @@
 
 					},
 					success: function(response){
-
+						
+						if(response.status == false){
+							var error = "<div class='alert error'><p>We unfortunately could not approve your payment.";
+							error += "<p>"+response.data.error.message+"</p>";
+							error += "</div>";
+							
+							$(errorDiv).html(error);
+							$('#sTSubmit').prop('disabled', false);
+							
+						} else {
+						
 						<? include("snippets/payment/process-appointment.php"); ?>
-
+						
+						}
+						
 						$(loader).removeClass("active").addClass("none");
 						
 						return;

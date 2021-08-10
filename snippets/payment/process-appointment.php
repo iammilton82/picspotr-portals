@@ -1,6 +1,8 @@
+
 if(response.status === 1 ||  response.status === true){
 			
 	var payment = response.data;
+	
 	
 	var appointment = {};
 	var startDateTime = moment('<?= $data->info->block->startDate ?> <?= $data->info->block->startTime ?>').unix();
@@ -49,10 +51,51 @@ if(response.status === 1 ||  response.status === true){
 			payment.customerId = theReservation.customers[0].id;
 			payment.description = "Payment for <?=$data->info->title?>";
 			
+			<? if($data->info->paymentConfig->providerTypeId === 5){ ?>
+			
+			var pay = {
+				photographerId: <?= $data->portal->photographerId ?>,
+				invoiceId: null,
+				customerId: theReservation.customers[0].id,
+				amountPaid: parseFloat(payment.payment.amount_money.amount / 100),
+				paymentDate: moment().unix(),
+				description: "Payment for <?=$data->info->title?>",
+				transactionId: payment.payment.id,
+				environment: '<?= ENVIRONMENT ?>',
+				responseText: payment.payment.status,
+				paymentMethod: 3,
+				provider: 'square',
+				currency: payment.payment.approved_money.currency
+			};
+			
+			<? } ?>
+			
+			
+			
+			<? if($data->info->paymentConfig->providerTypeId === 3){ ?>
+			
+			var pay = {
+				photographerId: <?= $data->portal->photographerId ?>,
+				invoiceId: null,
+				customerId: theReservation.customers[0].id,
+				amountPaid: parseFloat(payment.amount / 100),
+				paymentDate: moment().unix(),
+				description: "Payment for <?=$data->info->title?>",
+				transactionId: payment.id,
+				environment: '<?= ENVIRONMENT ?>',
+				responseText: payment.status,
+				paymentMethod: 3,
+				provider: 'square',
+				currency: payment.currency
+			};
+			
+			<? } ?>
+			
+			
 			$.ajax({
 				url: "<?=NODEJS_API?>/payments/save",
 				method: "POST",
-				data: payment,
+				data: pay,
 				dataType: 'json',
 				async: false,
 				crossDomain: true,
@@ -101,7 +144,7 @@ if(response.status === 1 ||  response.status === true){
 						?>
 					var confirmationURL = "/reserved?i=<?= $data->info->block->id ?>&r=<?= $data->info->recurringId ?>";
 					<? } } ?>
-
+					
 				window.location.replace(confirmationURL);
 				
 			}).fail(function(){

@@ -126,19 +126,11 @@ $assets = $p->portalAssets($portal);
 		        }
 			}).done(function(response){
 				if(response.status === 1 || response.status === true){
-					console.log(response);
 
 					Cookies.set('user', response.data.client.id);
 					Cookies.set('photographer', response.data.photographer.id);
 					Cookies.set('Timezone', response.data.photographer.timezone);
 					Cookies.set('TimezoneOffset', new Date().getTimezoneOffset());
-
-					// This is an example script - don't forget to change it!
-					FS.identify(response.data.client.id, {
-						displayName: response.data.client.fullName,
-						email: response.data.client.emailAddress,
-						userType: 'client'
-					});
 
 					window.location.href = "/dashboard";
 				} else {
