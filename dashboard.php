@@ -56,7 +56,7 @@ $u->checkAuth($customer);
 				<?
 				if($customer->invoices->number > 0){
 					foreach($customer->invoices->list as $invoice){
-						if($invoice->balance > 0 || $invoice->paid === 0){
+						if($invoice->balance > 0){
 				?>
 				<div class="item error">
 					<p>You have an unpaid balance for <strong><?=$invoice->name?></strong>. <a target="_blank" href="<?=INVOICES_URL."/index/".$invoice->invoiceToken?>">Make a payment &rsaquo;</a></p>
